@@ -1,0 +1,114 @@
+\documentclass[12pt]{article}
+
+\usepackage{a4wide}
+\usepackage{graphics}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{epsfig}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+
+\title{INF1: Oberfl\"achenplasmonen\\ \LaTeX-Vorlage f\"ur das F-Praktikum f\"ur Physik der Uni Hamburg}
+\author{Milan Zvolsk\'y}
+\date{01.01.2016}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\clearpage
+
+\begin{abstract}
+Hier steht eine Zusammenfassung, die die Motivation, das Ziel, die Methoden und die Ergebnisse \emph{kurz und pr\"agnant} darstellt.
+\end{abstract}
+
+\section{Einleitung}
+Aufgabenstellung, Ziel der Messungen
+
+\section{Theoretische Grundlagen}
+Kurze Zusammenfassung der wichtigsten \"Uberlegungen (Formeln), die zum Verst\"andnis des Versuches notwendig sind.\\
+F\"ur Details: Hinweise auf die Literatur, z.B.:
+Die Radioaktivit\"at wurde erstmals 1896 von Henri Becquerel entdeckt \cite{Becquerel:261888}.
+
+
+\section{Experimenteller Aufbau und Durchf\"uhrung}
+Prinzip der Messmethode, Einzelheiten der Apparatur (nur soweit sie spezifisch und zur Beurteilung der Qualit\"at der Messergebnisse von Bedeutung sind).
+
+\section{Ergebnisse}
+Messergebnisse mit Fehlerdiskussion.\\
+Im Protokoll nicht unbedingt alle Messwerte einzeln auff\"uhren, sondern nur die zur Berechnung der Ergebnisse wesentlichen Daten. \\
+
+
+\subsection{Unterabschnitt}
+Wichtig: Immer Verweis auf die Abbildung, auf die Bezug genommen wird.
+Z.B.: In Abb.~\ref{meinlabel1} sieht man einen Platzhalter.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Platzhalter.jpg}
+  \caption{Griffige Bildunterschrift}
+  \label{meinlabel1}
+\end{figure}
+
+Zwei Abbildungen nebeneinander sind in Abb.~\ref{meinlabel2} dargestellt.
+Und so sieht eine Tabelle aus (Tabelle~\ref{tabdummy}).
+
+Weitere Messwerte k\"onnen im Anhang \label{anhang} aufgelistet werden.
+
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}{0.49\textwidth}
+    \includegraphics[width=\textwidth]{./Platzhalter.jpg}
+    \caption{Bildunterschrift}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+    \includegraphics[width=\textwidth]{./Platzhalter.jpg}
+    \caption{Bildunterschrift}
+  \end{subfigure}
+  \caption{Griffige Bildunterschrift}
+  \label{meinlabel2}
+\end{figure}
+
+
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      A & B [mm] & C [V] \\
+      \hline
+      1 & 1.0 & 10.0 \\
+      2 & 1.1 & 11.0 \\
+      3 & 1.3 & 12.0 \\
+      \hline
+    \end{tabular}
+    \caption{Tabellenunterschrift}
+    \label{tabdummy}
+  \end{center}
+\end{table}%
+
+
+\section{Diskussion}
+Diskussion der physikalischen Ergebnisse.
+Vergleich mit den theoretischen Erwartungen, Fehlerdiskussion.
+
+
+\section{Zusammenfassung}
+Wiederholung/Zusammenfassung der wesentlichen Ergebnisse des Versuchs sowie deren Einordnung. Eventuell Ausblick.
+
+
+\thispagestyle{empty}
+\bibliography{FP_protokoll_template}
+\bibliographystyle{unsrt}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\clearpage
+\appendix
+\section{Anhang} \label{anhang}
+Hierhin geh\"oren in der Regel Originalmessprotokolle oder weitere Tabellen, die nicht f\"ur das Verst\"andnis des Protokolls essentiell sind.
+
+\end{document}
