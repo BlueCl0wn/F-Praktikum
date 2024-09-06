@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from scipy.signal import find_peaks_cwt
 import Fehlerrechnung as Fr
-
+from Funktionen import *
 Project_Path = "C:/Users/darek/OneDrive - M365 Universität Hamburg/UNI/FPrak/F_Praktikum/Kurzversuch/"
 
 end_of_data = 1200
@@ -40,75 +40,6 @@ led_62 = np.loadtxt(Project_Path + "Messwerte_KV4/4-3/led-spektrum-62V.txt", ski
 
 spectrum_arr = (np.array([led_55, led_56, led_57, led_58, led_59, led_60, led_61, led_62]))
 voltage_led_arr = np.arange(55, 63)
-
-
-def gaussian(x, mu, sigma, h):
-    """
-
-    :param x:
-    :param mu:
-    :param sigma:
-    :param h: supposed to make standardizing redundant. Doesnt really work though for peak 1
-    :return:
-    """
-    a = h/(sigma*np.sqrt(2*np.pi))
-    b = np.exp(-(x-mu)**2/(2*sigma**2))
-    return a*b
-
-def gaussian2(x, mu, sigma):
-    return gaussian(x, mu, sigma,1)
-
-def poisson(k, lam, h=1):
-    #print("lam = ", lam)
-    #print("k = ", k)
-    return h * lam**k / sp.special.factorial(k) * np.exp(-lam)
-
-def lin(x, m, b):
-    return m*x + b
-
-def lin_fit(x, y, yerror=None):
-    popt, pcov = curve_fit(lin, x, y, sigma = yerror, absolute_sigma=True)#
-
-    m_err = np.sqrt(pcov[0][0])
-    b_err = np.sqrt(pcov[1][1])
-    return popt, np.array([m_err, b_err])
-
-def gauss_fit(x, y, **kwargs) -> np.ndarray[unc.Variable]:
-    """
-
-    :param array_like x: data for x-axis
-    :param array_like y: data for y-axis
-    :param kwargs: p0: initial guess
-    :return: [mu, sigma, h]. h is only supposed to make standardizing easier.
-    """
-    defaultKwargs = {'p0': None}
-    kwargs = {**defaultKwargs, **kwargs}
-
-    popt, pcov = curve_fit(gaussian, x, y, p0=kwargs["p0"], absolute_sigma=True)
-
-    # Standard Deviations for fitted parameters
-    p_std = np.sqrt(np.diag(pcov))
-
-    #print("condition number of the covariance matrix for fit of peak 0: ", np.linalg.cond(pcov))
-
-    params_uarr = unp.uarray(popt, p_std)
-
-    return params_uarr
-
-def poisson_fit(x, y, **kwargs) -> np.ndarray[unc.Variable]:
-    defaultKwargs = {'p0': None}
-    kwargs = {**defaultKwargs, **kwargs}
-
-    popt, pcov = curve_fit(poisson, x, y, p0=kwargs["p0"], absolute_sigma=True)
-
-    # Standard Deviations for fitted parameters
-    p_std = np.sqrt(np.diag(pcov))
-
-    #print("condition number of the covariance matrix for fit of peak 0: ", np.linalg.cond(pcov))
-
-    params_uarr = unp.uarray(popt, p_std)
-
-    return params_uarr
 
 
 def get_index_peak(spectrum, peak_nr):
@@ -203,7 +134,7 @@ def get_gain_fit():
     gain_arr_nom = [i.nominal_value for i in gain_arr]
     gain_arr_std = [i.std_dev for i in gain_arr]
 
-    gain_fit_params = lin_fit(voltage_led_arr, gain_arr_nom, yerror=gain_arr_std)
+    gain_fit_params = poly_fit(voltage_led_arr, gain_arr_nom, yerror=gain_arr_std)
     print(gain_arr)
     plots = ((gain_arr_nom, "gain", "errorbar", ".", 1.5, gain_arr_std),
              (lin(voltage_led_arr, *gain_fit_params[0]), rf"Gain-Fit, ${gain_fit_params[0][0]:2.1f}+-{gain_fit_params[1][0]:.1g} \dot x + {gain_fit_params[0][1]:3.0f}+-{gain_fit_params[1][1]:.1g}$", "plot", None, 1))
@@ -275,6 +206,11 @@ def get_poisson_from_hist(spectrum, **kwargs):
 
 LED_Spektrum = True
 if LED_Spektrum:
+    print("gains:")
+    [get_gain(spectrum_arr_i, v_i, printt=True) for spectrum_arr_i, v_i in zip(spectrum_arr, voltage_led_arr)]
+
+
+
     #print("bin_data: ", bin_data(led_55))
     sadsdf = np.array([bin_data(led_55)[0],
                        np.arange(bin_data(led_55)[1].size -1)])
@@ -303,12 +239,12 @@ if LED_Spektrum:
     #print("params = ", poisson(led_55[0], *[i.nominal_value for i in fit_55]))
     #print(np.average(led_55[0], weights = led_55[1]))
 
-    Us = [57,60,63]
-    Titles = [r"Dunkelspektrum, $U_{bias} = 57, LI=0$",
-              r"Dunkelspektrum, $U_{bias} = 60, LI=0$",
-              r"Dunkelspektrum, $U_{bias} = 63, LI=0$"]
-    for i, u, t in zip(dunkel_arr, Us, Titles):
-        Fr.graph(*i, title=t, xlabel="ADC Count", ylabel="ADC Channel", ylog=True, marker=".")
+    #Us = [57,60,63]
+    #Titles = [r"Dunkelspektrum, $U_{bias} = 57, LI=0$",
+    #          r"Dunkelspektrum, $U_{bias} = 60, LI=0$",
+    #          r"Dunkelspektrum, $U_{bias} = 63, LI=0$"]
+    #for i, u, t in zip(dunkel_arr, Us, Titles):
+    #    Fr.graph(*i, title=t, xlabel="ADC Count", ylabel="ADC Channel", ylog=True, marker=".")
 
 
 
@@ -365,8 +301,8 @@ def f_n(spectrum, n):
 def DCR(_f_05, tau_gat):
     return _f_05 / tau_gat
 
-    def cn(_f_05, _f_15):
-        return _f_15 / _f_05
+def cn(_f_05, _f_15):
+    return _f_15 / _f_05
 
 Dunkelspektrum = False
 if Dunkelspektrum:

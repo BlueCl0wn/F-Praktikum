@@ -1,134 +1,146 @@
-import math
-from math import sqrt
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-
-I = 5
-
-
-def mean(l: list) -> int:
-    return sum(l) / len(l)
+import scipy as sp
+import uncertainties as unc
+import uncertainties.unumpy as unp
+import tabulate as tl
 
 
-def list_varianz(l: list) -> list:
-    return [(i - mean(l)) ** 2 for i in l]
+def gaussian(x, mu, sigma, h=1):
+    """
+    Function to compute y values of a gaussian for given x values.
+
+    :param float | np.ndarray x: X-values for which y values of gaussian are to be computed.
+    :param float mu: \mu parameter of gaussian representing the mean of gaussian distribution.
+    :param float sigma: \sigma parameter of gaussian representing the standard deviation of gaussian distribution.
+    :param float h: Height factor of gaussian. Not standard parameter but is supposed to make standardizing redundant / not as critical.
+    :return float | np.ndarray: int or array of ints containing the computed y-values of gaussian
+    """
+    a = h/(sigma*np.sqrt(2*np.pi))
+    b = np.exp(-(x-mu)**2/(2*sigma**2))
+    return a*b
+
+def poisson(k, lam, h=1):
+    """
+    Function to compute y values of a poisson for given k values.
+
+    :param int | np.ndarray k: integer k-values or array of k-values for which y values of poisson are to be computed.
+    :param float lam: \lambda parameter of poisson distribution. \lambda represents mean and standard deviation of poisson distribution.
+    :param float h: Height factor of gaussian. Not standard parameter but is supposed to make standardizing redundant / not as critical.
+    :return float | np.ndarray: int or array of ints containing the computed y-values of poisson.
+    """
+    return h * lam**k / sp.special.factorial(k) * np.exp(-lam)
 
 
-def sum_varianz(x):
-    return sum(list_varianz(x))
+def lin(x, m, b):
+    """
+    Function to compute y values of a linear function for given x values.
+
+    Using 'numpy.poly1d' is probably better. This method can be used with uncertainties.ufloats though.
+
+    This function supports unc.ufloat operation. For example if one fits the parameters using 'lin_fit' and has them
+    returned as ndarray[unc.ufloat] this method automatically gives errors of later computed y-values .
+
+    :param float | np.ndarray x: X-values for which y values of linear euqation are to be computed.
+    :param float m: slope parameter of linear equation.
+    :param float b: y-intercept parameter of linear equation.
+    :return float | np.ndarray: int or array of ints containing the computed y-values of poisson.
+    """
+    return m*x + b
 
 
-def get_xx(x) -> int:
-    xx = 0
-    for i in range(len(x)):
-        xx += x[i] ** 2
-    return xx
+def poly_fit(x, y, y_error=None, deg=1, return_func=False, uncert=False):
+    """
+    Function fitting a linear equation on a given dataset. Uses 'numpy.polyfit', cov="unscaled" in order to support input of standard deviations.
+    params[0] is coefficient of highest order x term.
 
+    :param array_like x: X values of dataset.
+    :param array_like y: Y values of dataset.
+    :param int deg: Degree of fitted polynomial. Standard value is deg=1.
+    :param array_like y_error: Standard deviation of y values. Can be single value if all y values have same error or array_like if each y values has its own error.
+    :return: tuple containing parameters. Slope on position zero and standard deviation of parameters on position one.
+    :param bool return_func: Boolean to turn on returning of function instead of parameters. Into this function x values can be parsed to get the y values of the fitted polynomial. Uses 'numpy.poly1d'.
+    :param bool uncert: Boolean to switch to an array of 'uncertainties.ufloat' instead of tuple (params, stds)
+    :return: Depends on 'return_func' and 'uncert'. Standard output is a tuple (params, stds).
+    """
+    # Set default kwargs.
+    #defaultKwargs = {'p0': None}
+    #kwargs = {**defaultKwargs, **kwargs}
 
-def get_xy(x: list, y: list) -> int:
-    xy = 0
-    for i in range(len(x)):
-        # if (x[i] is not None) & (y[i] is not None): # Attempt at making it None-Proof
-        xy += x[i] * y[i]
-    return xy
-
-
-def sum_d_i2(x, y):
-    b = get_b(x, y)
-    a = get_a(x, y)
-
-    d = 0
-    for i in range(len(x)):
-        d += (y[i] - b * x[i] - a) ** 2
-    return d
-
-
-def get_s_x(x: list) -> float:
-    return math.sqrt(1 / (len(x) * (len(x) - 1)) * sum_varianz(x))
-
-
-def get_b(x: list, y: list) -> float:
-    xy = get_xy(x, y)
-    xx = get_xx(x)
-    return (xy - len(x) * mean(x) * mean(y)) / (xx - len(x) * mean(x) ** 2)
-
-
-def get_a(x, y):
-    return mean(y) - get_b(x, y) * mean(x)
-
-
-def get_s_b(x, y):
-    if len(x) <= 2:
-        return 9999999999999
+    # Handle y_errors
+    if y_error is not None:
+        w = 1/y_error
     else:
-        s = (1 / (len(x) - 2)) * ((sum_d_i2(x, y)) / (sum_varianz(x)))
-        return math.sqrt(s)
+        w = None
+
+    # Calculate parameters of polynomial and their standard deviations.
+    popt, pcov = np.polyfit(x, y, deg=deg, w=w, cov="unscaled")
+    errors = np.sqrt(np.diag(pcov))
+
+    if return_func: # Return polynomial function
+        return np.poly1d(popt)
+    elif uncert: # Return parameters as unc.uarray
+        params_uarr = unp.uarray(popt, errors)
+        return params_uarr
+    else: # Return as tuple of (parameters, std)
+        return popt, errors
 
 
-def get_s_a(x, y):
-    if len(x) <= 2:
-        return 9999999999999
+def gauss_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc.Variable]]:
+    """
+    Function fitting a gaussian on a given dataset. Uses 'scipy.optimize.curve_fit' with own 'gaussian' method. 'absolute_sigma=True'.
+    For more info on the parameters see documentation of 'gaussian'
+    :param array_like x: X values of dataset.
+    :param array_like y: Y values of dataset.
+    :param kwargs: p0: initial guesses for , bool uncertainties: Whether to return the fit-parameters as ndarray of unc.ufloats or tuple of ndarrays.
+    :return: [mu, sigma, h] tuple of unc.ufloats or tuple of arrays like (parameters, std). Depends on value for 'uncertainties' kwarg, standard is True.
+    """
+    defaultKwargs = {'p0': None, 'uncertainties': True}
+    kwargs = {**defaultKwargs, **kwargs}
+
+    popt, pcov = sp.optimize.curve_fit(gaussian, x, y, p0=kwargs["p0"], absolute_sigma=True)
+
+    # Standard Deviations for fitted parameters
+    p_std = np.sqrt(np.diag(pcov))
+
+    # Calculate and print condition number of fit parameters on the fly.
+    # print("condition number of the covariance matrix for fit of peak 0: ", np.linalg.cond(pcov))
+
+    params_uarr = unp.uarray(popt, p_std)
+    if kwargs['uncertainties']:
+        return params_uarr
     else:
-        xx = get_xx(x)
-        s = xx / len(x) * get_s_b(x, y) ** 2
-        return math.sqrt(s)
+        return popt, p_std
 
-
-def wert_x(x: list, name: str = None) -> tuple:
-    x_mean = mean(x)
-    s_x_mean = get_s_x(x)
-    perc = s_x_mean / x_mean if x_mean != 0 else 9999999999
-    if name is not None:
-        print(f"{name: .3e}_mean = {x_mean: .3e} +- {s_x_mean: .3e}    (+- {perc: .3e})")
-        print()
-    return x_mean, s_x_mean
-
-
-def wert_xy(x: list | np.ndarray, y: np.ndarray, name: str = None) -> tuple:
-    if name is not None:
-        print(f"{name}:")
-
-    # Convert to np.ndrarray if not already so.
-    if type(x) == list:
-        x = np.array(x)
-    if type(y) == list:
-        y = np.array(y)
-
-    # Remove all None entries from the given data
-    pos1 = x == None  # '==' is correct. Is would check if array is None not whether elements of array are None.
-    pos2 = y == None
-    pos = np.logical_or(pos1, pos2)
-    x = x[~pos]
-    y = y[~pos]
-
-    # do calcultions
-    b = get_b(x, y)
-    s_b = get_s_b(x, y)
-    b_perc = s_b / b if b != 0 else 999999999999999
-
-    a = get_a(x, y)
-    s_a = get_s_a(x, y)
-    a_perc = s_a / a if a != 0 else 999999999999999
-
-    if name is not None:
-        print(f" -  b = {b: .3e} +- {s_b: .3e}  (+- {b_perc: .3e})")
-        print(f" -  a = {a: .3e} +- {s_a: .3e}  (+- {a_perc: .3e})")
-        print()
-
-    return b, a, s_b, s_a
-
-
-def get_trendlinie(x: list, y: list):
+def poisson_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc.Variable]]:
+    """
+    Function fitting a poisson on a given dataset. Uses 'scipy.optimize.curve_fit' with own 'poisson' method. 'absolute_sigma=True'.
+    For more info on the parameters see documentation of 'poisson'
+    :param array_like x: X values of dataset.
+    :param array_like y: Y values of dataset.
+    :param kwargs: p0: initial guesses for , bool uncertainties: Whether to return the fit-parameters as ndarray of unc.ufloats or tuple of ndarrays.
+    :return: [lam, h] tuple of unc.ufloats or tuple of arrays like (parameters, std). Depends on value for 'uncertainties' kwarg, standard is True.
     """
 
-    :param x:
-    :param y:
-    :return:
-    """
-    z = np.polyfit(x, y, 1)
-    p = np.poly1d(z)
-    return p(x)
+    defaultKwargs = {'p0': None, 'uncertainties': True}
+    kwargs = {**defaultKwargs, **kwargs}
+
+    popt, pcov = sp.optimize.curve_fit(poisson, x, y, p0=kwargs["p0"], absolute_sigma=True)
+
+    # Standard Deviations for fitted parameters
+    p_std = np.sqrt(np.diag(pcov))
+
+    # Calculate and print condition number of fit parameters on the fly.
+    # print("condition number of the covariance matrix for fit of peak 0: ", np.linalg.cond(pcov))
+
+    if kwargs['uncertainties']:
+        params_uarr = unp.uarray(popt, p_std)
+        return params_uarr
+    else:
+        return popt, p_std
+
+
+# TODO Create method for a chisquare test. Should exist in scipy, I just don't understand the functions.
 
 
 def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool = False, title: str = None,
@@ -167,9 +179,10 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
             elif y_i[2] == "errorbar":
                 ax.errorbar(x, y_i[0], yerr=y_i[5], linewidth=y_i[4], label=y_i[1], marker=y_i[3])
             if trendlinie:
-                b, a, s_b, s_a = wert_xy(x, y_i[0])
-                ax.plot(x, [(b * i + a) for i in x], color="grey", linestyle="dashed",
-                        label=rf"{y_i[1]}: Trendlinie: {b: .2e}$*x + {a: .2e}$", marker=marker, linewidth=size)
+                params, stds = poly_fit(x, y, uncert=False)
+                func =  np.poly1d(params)
+                ax.plot(x, func(x), color="grey", linestyle="dashed",
+                        label=rf"{y_i[1]}: Trendlinie: {params[0]: .2e}$*x + {params[1]: .2e}$", marker=marker, linewidth=size)
         ax.legend()
 
     else:
@@ -180,9 +193,10 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
         elif graph == "errorbar":
             ax.errorbar(x, y, yerr = yerror, linewidth=1.5*size, marker=marker)
         if trendlinie:
-            b, a, s_b, s_a = wert_xy(x, y)
-            ax.plot(x, [(b * i + a) for i in x], color="grey", linestyle="dashed",
-                    label=rf"Trendlinie: {b: .2e}$*x + {a: .2e}$")
+            params, stds= poly_fit(x, y, uncert=False)
+            func =  np.poly1d(params)
+            ax.plot(x, func(x), color="grey", linestyle="dashed",
+                    label=rf"Trendlinie: {params[0]: .2e}$*x + {params[1]: .2e}$")
             ax.legend()
 
     if xlog:
@@ -195,6 +209,11 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
     ax.set_title(title)
     ax.grid()
     plt.show()
+
+
+a = np.array([1,2,3,4,5,6,7,8,9,10])+1
+b = np.array([11,17,28,41,52,63,71,85,89,100])
+graph(a, b, trendlinie=True)
 
 
 def table(data: list | tuple | np.ndarray, rowLabels: list = None, colLabels: list = None, transpose=True) -> None:
@@ -219,3 +238,16 @@ def table(data: list | tuple | np.ndarray, rowLabels: list = None, colLabels: li
     ax.axis('off')
 
     plt.show()
+
+
+# Tabellen
+def latex_table(data: list, headers: list):
+    """Funktion für LaTeX Booktabs-Tabellen.
+
+    author=gruenfink17
+
+    :param data: table data as a list (of lists or arrays)(e.g. [x,y])
+    :param headers: headers of the table as a list of strings (e.g. ["x","y"])"""
+    tab = np.array(data).transpose()
+    table = tl.tabulate(tab, headers=headers, tablefmt="latex_booktabs", numalign="center", stralign="center")
+    return table
