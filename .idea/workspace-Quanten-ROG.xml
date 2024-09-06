@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9777317b-7bad-4be2-a7b7-5531ecf2fc04" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/KV4.bib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Versuch1/Versuch1Python.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/1-1/SDS00003.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00001.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00002.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00003.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00004.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00005.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00006.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00007.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00008.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00009.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00010.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00011.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00012.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Messwerte_KV4/1-Beobachtungen/SDS00013.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/KV4.run.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil/KV4.aux" beforeDir="false" afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil/KV4.aux" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil/KV4.log" beforeDir="false" afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil/KV4.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil/KV4.out" beforeDir="false" afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil/KV4.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out/KV4.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out/KV4.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out/KV4.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out/KV4.synctex.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gain_fit.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gate_7000.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gate_8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_55.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_59.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_60.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_61.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/gaussfit_62.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/model 55.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 59.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 60.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 61.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Grafiken/modell 62.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/KV4.tex" beforeDir="false" afterPath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/KV4.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/Literatur/literatur.bib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/csv/csvtable.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/main.bib" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2l9LSr1RryBKAwjXIfFzArt5ETV" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "BibTeX.main bibliography.executor": "Run",
+    "LaTeX.KV4.executor": "Run",
+    "LaTeX.main.executor": "Run",
+    "Python.KV4_Python.executor": "Run",
+    "Python.dsfsdgf.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/darek/OneDrive - M365 Universität Hamburg/UNI/FPrak/F_Praktikum",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "texify.conventions",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\F_Praktikum\Kurzversuch\Messwerte_KV4\4-2" />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\F_Praktikum\Kurzversuch\Messwerte" />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\F_Praktikum\Kurzversuch\Messwerte\1-Beobachtungen\1-1 " />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\Kurzversuch\F_Praktikum\Versuch2\Protokoll-Versuch2" />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\Kurzversuch\F_Praktikum\Versuch3\Protokoll-Versuch3" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\F_Praktikum\Kurzversuch\Protokoll-KV4\src" />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\F_Praktikum\Kurzversuch\Messwerte_KV4\4-3" />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\Kurzversuch\KV4-LatexProject\Kurzversuch\Protokoll-KV4" />
+      <recent name="C:\Users\darek\OneDrive - M365 Universität Hamburg\UNI\FPrak\Kurzversuch\KV4-LatexProject\Kurzversuch" />
+    </key>
+  </component>
+  <component name="RunManager" selected="BibTeX.main bibliography">
+    <configuration name="main bibliography" type="BIBTEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
+      <texify-bibtex>
+        <compiler>BIBTEX</compiler>
+        <compiler-path />
+        <compiler-arguments />
+        <envs>
+          <env name="BIBINPUTS" value="$PROJECT_DIR$/src" />
+          <env name="BSTINPUTS" value="$PROJECT_DIR$/src;" />
+        </envs>
+        <main-file />
+        <aux-dir>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out</aux-dir>
+      </texify-bibtex>
+      <method v="2" />
+    </configuration>
+    <configuration name="main bibliography" type="BIBTEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
+      <texify-bibtex>
+        <compiler>BIBTEX</compiler>
+        <compiler-path />
+        <compiler-arguments />
+        <envs>
+          <env name="BIBINPUTS" value="$PROJECT_DIR$/src" />
+          <env name="BSTINPUTS" value="$PROJECT_DIR$/src;" />
+        </envs>
+        <main-file />
+        <aux-dir>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out</aux-dir>
+      </texify-bibtex>
+      <method v="2" />
+    </configuration>
+    <configuration name="KV4" type="LATEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory" temporary="true">
+      <texify>
+        <compiler>PDFLATEX</compiler>
+        <compiler-path />
+        <sumatra-path />
+        <pdf-viewer>NONE</pdf-viewer>
+        <viewer-command />
+        <compiler-arguments />
+        <envs />
+        <before-run-command />
+        <main-file>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/KV4.tex</main-file>
+        <output-path>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out</output-path>
+        <auxil-path>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil</auxil-path>
+        <compile-twice>false</compile-twice>
+        <output-format>PDF</output-format>
+        <latex-distribution>MIKTEX</latex-distribution>
+        <has-been-run>true</has-been-run>
+        <bib-run-config>[BibTeX.main bibliography]</bib-run-config>
+        <makeindex-run-config>[]</makeindex-run-config>
+      </texify>
+      <method v="2" />
+    </configuration>
+    <configuration name="KV4" type="LATEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory" temporary="true">
+      <texify>
+        <compiler>PDFLATEX</compiler>
+        <compiler-path />
+        <sumatra-path />
+        <pdf-viewer>NONE</pdf-viewer>
+        <viewer-command />
+        <compiler-arguments />
+        <envs />
+        <before-run-command />
+        <main-file>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/src/KV4.tex</main-file>
+        <output-path>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/out</output-path>
+        <auxil-path>$PROJECT_DIR$/Kurzversuch/Protokoll-KV4/auxil</auxil-path>
+        <compile-twice>false</compile-twice>
+        <output-format>PDF</output-format>
+        <latex-distribution>MIKTEX</latex-distribution>
+        <has-been-run>true</has-been-run>
+        <bib-run-config>[BibTeX.main bibliography]</bib-run-config>
+        <makeindex-run-config>[]</makeindex-run-config>
+      </texify>
+      <method v="2" />
+    </configuration>
+    <configuration name="Protokoll V1" type="LATEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
+      <texify>
+        <compiler>PDFLATEX</compiler>
+        <compiler-path />
+        <sumatra-path />
+        <pdf-viewer>NONE</pdf-viewer>
+        <viewer-command />
+        <compiler-arguments />
+        <envs />
+        <before-run-command />
+        <main-file>$PROJECT_DIR$/Versuch1/Protokoll-Versuch1/src/main.tex</main-file>
+        <output-path>$PROJECT_DIR$/Versuch1/Protokoll-Versuch1/src</output-path>
+        <auxil-path>$PROJECT_DIR$/Versuch1/Protokoll-Versuch1/auxil</auxil-path>
+        <compile-twice>false</compile-twice>
+        <output-format>PDF</output-format>
+        <latex-distribution>MIKTEX</latex-distribution>
+        <has-been-run>true</has-been-run>
+        <bib-run-config>[BibTeX.main bibliography]</bib-run-config>
+        <makeindex-run-config>[]</makeindex-run-config>
+      </texify>
+      <method v="2" />
+    </configuration>
+    <configuration name="Protokoll V1" type="LATEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
+      <texify>
+        <compiler>PDFLATEX</compiler>
+        <compiler-path />
+        <sumatra-path />
+        <pdf-viewer>NONE</pdf-viewer>
+        <viewer-command />
+        <compiler-arguments />
+        <envs />
+        <before-run-command />
+        <main-file>$PROJECT_DIR$/Versuch1/Protokoll-Versuch1/src/main.tex</main-file>
+        <output-path>$PROJECT_DIR$/Versuch1/Protokoll-Versuch1/src</output-path>
+        <auxil-path>$PROJECT_DIR$/Versuch1/Protokoll-Versuch1/auxil</auxil-path>
+        <compile-twice>false</compile-twice>
+        <output-format>PDF</output-format>
+        <latex-distribution>MIKTEX</latex-distribution>
+        <has-been-run>true</has-been-run>
+        <bib-run-config>[BibTeX.main bibliography]</bib-run-config>
+        <makeindex-run-config>[]</makeindex-run-config>
+      </texify>
+      <method v="2" />
+    </configuration>
+    <configuration name="KV4_Python" type="PythonConfigurationType" factoryName="Python">
+      <module name="F-Praktikum" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Kurzversuch/KV4_Python/KV4_Auswertung.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="KV4_Python" type="PythonConfigurationType" factoryName="Python">
+      <module name="F-Praktikum" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Kurzversuch/KV4_Python/KV4_Auswertung.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="BibTeX.main bibliography" />
+      <item itemvalue="LaTeX.Protokoll V1" />
+      <item itemvalue="LaTeX.Protokoll V2" />
+      <item itemvalue="LaTeX.Protokoll V3" />
+      <item itemvalue="LaTeX.KV4" />
+      <item itemvalue="Python.KV4_Python" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="LaTeX.KV4" />
+        <item itemvalue="LaTeX.KV4" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-PY-242.20224.347" />
+        <option value="bundled-python-sdk-c2d6afa66fbe-39cff9de6eef-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.20224.347" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9777317b-7bad-4be2-a7b7-5531ecf2fc04" name="Changes" comment="" />
+      <created>1724587351474</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1724587351474</updated>
+      <workItem from="1724587358453" duration="171000" />
+      <workItem from="1724587635625" duration="1405000" />
+      <workItem from="1724624086977" duration="469000" />
+      <workItem from="1724626393522" duration="54000" />
+      <workItem from="1724626450626" duration="21088000" />
+      <workItem from="1724921773935" duration="2222000" />
+      <workItem from="1725262171846" duration="4411000" />
+      <workItem from="1725275476463" duration="787000" />
+      <workItem from="1725276288921" duration="3347000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/Git" />
+    </ignored-roots>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/KV4_LatexProject$dsfsdgf.coverage" NAME="dsfsdgf Coverage Results" MODIFIED="1724591186089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/F_Praktikum$KV4_Python.coverage" NAME="KV4_Python Coverage Results" MODIFIED="1725268555853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+  </component>
+</project>
