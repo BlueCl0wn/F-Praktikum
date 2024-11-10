@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from scipy.signal import find_peaks_cwt
 import Fehlerrechnung as Fr
+from Fehlerrechnung import *
 from Funktionen import *
 Project_Path = "C:/Users/darek/OneDrive - M365 Universität Hamburg/UNI/FPrak/F_Praktikum/Kurzversuch/"
 
@@ -204,7 +205,7 @@ def get_poisson_from_hist(spectrum, **kwargs):
     plt.show()
     return fit_params
 
-LED_Spektrum = True
+LED_Spektrum = False
 if LED_Spektrum:
     print("gains:")
     [get_gain(spectrum_arr_i, v_i, printt=True) for spectrum_arr_i, v_i in zip(spectrum_arr, voltage_led_arr)]
@@ -353,7 +354,7 @@ def g(x, lam, sigma_0, sigma_1, G):
     total_expr = np.array([g_single(x, lam, sigma_0, sigma_1, G, ki) for ki in k])
     return total_expr.sum(0)
 
-def plot_g(spectrum, volt=None):
+def plot_g(spectrum, sigmas, end, volt=None):
     lam = get_mean_poisson(spectrum).nominal_value
     sig_0 = gauss_fit(*get_cutout_of_peak(spectrum, 0))
 
@@ -364,8 +365,8 @@ def plot_g(spectrum, volt=None):
     #sig_0 = sig_0[1].nominal_value
 
     # geratene sigmas
-    sig_0 = 0.07
-    sig_1 = 0.06
+    sig_0 = sigmas[0] # 0.07
+    sig_1 = sigmas[1] # 0.06
 
     print("sig_0 : ",sig_0)
     print("sig_1 : ",sig_1)
@@ -375,7 +376,7 @@ def plot_g(spectrum, volt=None):
     y_data[y_data*1e6 < 1] = 0
     plots = ((spectrum[1], rf"Measurements", 'scatter', '.', 1),
              (y_data*1e6, rf"LED-Modell, $\sigma_0 = {sig_0}$, $\sigma_1 = {sig_1}$, $\lambda = {lam:0.2g}$, $G = {gain:0.2g}$", 'plot', None,1))
-    Fr.graph(spectrum[0], plots, title=rf"LED-Modell auf Daten für Spektrum bei $U={volt}V$", ylog=True)
+    Fr.graph(spectrum[0], plots, title=rf"LED-Modell auf Daten für Spektrum bei $U={volt}V$", xlabel="ADC Channel", ylabel="ADC Counts", ylog=True)
 
     #('y_data', 'label', 'plot_type {'scatter', 'plot', 'errorbar', etc.}', 'marker', 'linewidth(s)', 'y_err')
 
@@ -404,7 +405,7 @@ def lin_solve_zero(y, m, b):
     return (y-b)/m
 
 
-LED_Modell = False
+LED_Modell = True
 if LED_Modell:
     #                   sig_0,sig_1
     sigmas = np.array([(0.17, 0.1),  # 55
@@ -425,7 +426,13 @@ if LED_Modell:
     b = unc.ufloat(-1029.737130851791,51.728403869994736)
     print("Durchbruchsspannung = ", lin_solve_zero(0, m ,b))
 
-    #plot_g(led_62, "62")
+    #print(spectrum_arr[0][:, :4])
+    volts = [str(i) for i in range(55, 63)]
+    def plot_one_g(index, end):
+        plot_g(spectrum_arr[index][:,:end], sigmas[index], end, volts[index])
+    ind = 7
+    ende = 19000
+    plot_one_g(ind,ende)
 
 
 

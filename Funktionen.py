@@ -127,10 +127,10 @@ def wert_xy(x: list | np.ndarray, y: np.ndarray, y_error=None, name: str = None)
 def get_trendlinie(x: list, y: list):
     """
 
-    :param x:
-    :param y:
-    :return:
-    """
+   # :param x:
+   # :param y:
+   # :return:
+"""
     params = poly_fit(x, y, unc=False, func=True)[0]
     return params(x) # TODO x-Werte ändern zu np.linspace(x.min(), x.max(), x.size*100) ?
 

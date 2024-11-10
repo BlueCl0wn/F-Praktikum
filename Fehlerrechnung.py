@@ -112,6 +112,8 @@ def gauss_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc
     else:
         return popt, p_std
 
+
+
 def poisson_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc.Variable]]:
     """
     Function fitting a poisson on a given dataset. Uses 'scipy.optimize.curve_fit' with own 'poisson' method. 'absolute_sigma=True'.
@@ -211,9 +213,9 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
     plt.show()
 
 
-a = np.array([1,2,3,4,5,6,7,8,9,10])+1
-b = np.array([11,17,28,41,52,63,71,85,89,100])
-graph(a, b, trendlinie=True)
+#a = np.array([1,2,3,4,5,6,7,8,9,10])+1
+#b = np.array([11,17,28,41,52,63,71,85,89,100])
+#graph(a, b, trendlinie=True)
 
 
 def table(data: list | tuple | np.ndarray, rowLabels: list = None, colLabels: list = None, transpose=True) -> None:
