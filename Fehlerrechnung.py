@@ -1,3 +1,5 @@
+from typing import Optional, Union, List
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
@@ -31,7 +33,6 @@ def poisson(k, lam, h=1):
     """
     return h * lam**k / sp.special.factorial(k) * np.exp(-lam)
 
-
 def lin(x, m, b):
     """
     Function to compute y values of a linear function for given x values.
@@ -47,7 +48,6 @@ def lin(x, m, b):
     :return float | np.ndarray: int or array of ints containing the computed y-values of poisson.
     """
     return m*x + b
-
 
 def poly_fit(x, y, y_error=None, deg=1, return_func=False, uncert=False):
     """
@@ -85,7 +85,6 @@ def poly_fit(x, y, y_error=None, deg=1, return_func=False, uncert=False):
     else: # Return as tuple of (parameters, std)
         return popt, errors
 
-
 def gauss_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc.Variable]]:
     """
     Function fitting a gaussian on a given dataset. Uses 'scipy.optimize.curve_fit' with own 'gaussian' method. 'absolute_sigma=True'.
@@ -111,8 +110,6 @@ def gauss_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc
         return params_uarr
     else:
         return popt, p_std
-
-
 
 def poisson_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[unc.Variable]]:
     """
@@ -141,17 +138,39 @@ def poisson_fit(x, y, **kwargs) -> np.ndarray[unc.Variable] | tuple[np.ndarray[u
     else:
         return popt, p_std
 
-
 # TODO Create method for a chisquare test. Should exist in scipy, I just don't understand the functions.
 
-
-def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool = False, title: str = None,
-          xlabel: str = None, multiple=False,
-          ylabel: str = None, xlog: bool = False, ylog: bool = False, graph="scatter", marker=None, size=1, yerror=None) -> None:
+def graph(x: list | np.ndarray,
+          y: list | tuple | np.ndarray,
+          trendlinie: bool = False,
+          title: Optional[str] = None,
+          xlabel: Optional[str] = None,
+          multiple=False,
+          trend_start: Optional[int] = None,
+          trend_stop: Optional[int] = None,
+          ylabel: Optional[str] = None,
+          xlog: bool = False,
+          ylog: bool = False,
+          graph="scatter",
+          marker=None,
+          size=1,
+          yerror=0,
+          minorgrid: bool = False,
+          peaks: Optional[list[int]] = None,
+          capsize=None,
+          fmt = None,
+          ecolor=None
+          ) -> None:
     """
-    Allgemeine Funktion zum Plotten von Messwerten. Kein Wundermittel, aber vereinfacht as darstellen einfacher
+    Allgemeine Funktion zum Plotten von Messwerten. Kein Wundermittel, aber vereinfacht das darstellen einfacher
     Datenreihen.
 
+    :param size:
+    :param yerror:
+    :param minorgrid:
+    :param peaks: You need to parse a list of indices that represent the peaks. TODO: Update to auto detect peaks? Problem of tweaking prominence
+    :param trend_stop:
+    :param trend_start:
     :param x: data for x-axis
     :param y: data for y-axis. Can be array_like. If there is supposed to be more than one plot in the figure,
     y can tuple of tuples of kind ('y_data', 'label', 'plot_type {'scatter', 'plot', 'errorbar', etc.}', 'marker', 'linewidth(s)', 'y_err')
@@ -167,23 +186,29 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
     :param graph:
     :return: None
 
+    If multiple y data: (data array, label, plot type, marker, linewdiths)
     """
     fig, ax = plt.subplots(layout='constrained')
 
     # Change multple plot tuple of tuples to tuple of dicts/kwargs with support for standard values
 
-    if (type(y) is tuple) or multiple:
+    if (type(y) is Union[tuple, List]) or multiple:
         for y_i in y:
             if y_i[2] == "scatter":
-                ax.scatter(x, y_i[0], linewidths=y_i[4], label=y_i[1], marker=y_i[3])
+                ax.scatter(x, y_i[0], label=y_i[1], linewidths=y_i[4], marker=y_i[3])
             elif y_i[2] == "plot":
-                ax.plot(x, y_i[0], linewidth=y_i[4], label=y_i[1], marker=y_i[3])
+                ax.plot(x, y_i[0], label=y_i[1], linewidth=y_i[4])# marker=y_i[3])
             elif y_i[2] == "errorbar":
                 ax.errorbar(x, y_i[0], yerr=y_i[5], linewidth=y_i[4], label=y_i[1], marker=y_i[3])
             if trendlinie:
-                params, stds = poly_fit(x, y, uncert=False)
+                params, stds = poly_fit(x[trend_start: trend_stop], y[trend_start:trend_stop], uncert=False)
                 func =  np.poly1d(params)
-                ax.plot(x, func(x), color="grey", linestyle="dashed",
+                if type(trend_start) is not None:
+                    x_short = x[int(trend_start- 0.1*trend_start): int(trend_stop+ 0.18*trend_stop)]
+                else:
+                    x_short = x
+
+                ax.plot(x_short, func(x_short), color="black", linestyle="dashed",
                         label=rf"{y_i[1]}: Trendlinie: {params[0]: .2e}$*x + {params[1]: .2e}$", marker=marker, linewidth=size)
         ax.legend()
 
@@ -193,12 +218,18 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
         elif graph == "plot":
             ax.plot(x, y, linewidth=1.5*size, marker=marker)
         elif graph == "errorbar":
-            ax.errorbar(x, y, yerr = yerror, linewidth=1.5*size, marker=marker)
+            ax.errorbar(x, y, yerr = yerror, linewidth=1.5*size, marker=marker, capsize=capsize, fmt=fmt, ecolor =ecolor)
         if trendlinie:
-            params, stds= poly_fit(x, y, uncert=False)
+            params, stds= poly_fit(x[trend_start: trend_stop], y[trend_start: trend_stop], uncert=False)
             func =  np.poly1d(params)
-            ax.plot(x, func(x), color="grey", linestyle="dashed",
-                    label=rf"Trendlinie: {params[0]: .2e}$*x + {params[1]: .2e}$")
+
+            if type(trend_start) is not None:
+                x_short = x[int(trend_start - 0.1 * trend_start): int(trend_stop + 0.18 * trend_stop)]
+            else:
+                x_short = x
+
+            ax.plot(x_short, func(x_short), color="fuchsia", linestyle="dashed",
+                    label=rf"Trendlinie: ${params[0]: .2e} \cdot x + {params[1]: .2e}$")
             ax.legend()
 
     if xlog:
@@ -206,11 +237,30 @@ def graph(x: list | np.ndarray, y: list | tuple | np.ndarray, trendlinie: bool =
     if ylog:
         ax.set_yscale("log")
 
+    if peaks is not None:
+        # To find the peaks use:
+        # peaks, _ = find_peaks(Kalibrationsdaten.y_data, prominence=0.7)  # find peaks
+        # Then pass 'peaks' when calling this function.
+        for peak in peaks:
+            ax.annotate(f'{x[peak]:.2f}',
+                        xy=(x[peak], y[peak]),
+                        xytext=(0, 2),  # 10 points vertical offset
+                        textcoords='offset points',
+                        ha='center', va='bottom',
+                        #bbox=dict(boxstyle='round,pad=0.5', fc='yellow', alpha=0.5),
+                        #arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0')
+                        )
+
+
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_title(title)
     ax.grid()
+    if minorgrid:
+        ax.grid(which="minor")
+        ax.minorticks_on()
     plt.show()
+
 
 
 #a = np.array([1,2,3,4,5,6,7,8,9,10])+1

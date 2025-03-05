@@ -145,7 +145,7 @@ def doPlot(plotData, plot, fig, canvas):
         iWidth = plotDataParameters[i][2]
         iColor = plotDataParameters[i][3]
         labels.append(iLabel)
-        plot.plot(SpecScale, SpecVals, linewidth=iWidth, color=iColor)
+        plot.plot1(SpecScale, SpecVals, linewidth=iWidth, color=iColor)
     plot.set_xlabel(plotAxisLabels[0], fontsize=28)
     plot.set_ylabel(plotAxisLabels[1], fontsize=28)
     plot.tick_params(axis='both', which='major', labelsize=20)

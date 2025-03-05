@@ -1,0 +1,21 @@
+008: Übersicht, not used
+009: Übersicht, not used
+010: Übersicht für 2.
+011: Integrationsmessung für Kalibrationskonstante, BW=5 Hz (zu klein)
+012: Integrationsmessung für Kalibrationskonstante, BW=10 Hz (zu klein)
+013: Integrationsmessung für Kalibrationskonstante, BW=100 Hz für 3.
+014: Ring Down Messung P=3e-6 mBar
+015:
+016:
+017: Ring Down Messung P=2.8e-6 mBar
+018: Ring Down Messung P=1.5e-6 mBar
+019: Ring Down Messung, P=7.1e-6 mBar
+020: Ring Down Messung, 1.5e-5 mBar
+021: Ring Down Messung, 7.8e-5 mBar
+022: Ring Down Messung, 1.6e-4 mBar
+023: Ring Down Messung, 5.8e-5 mBar
+024: Ring Down Messung, 1.5e-3 mBar
+025: Ring Down Messung, 4.6e-3 mBar
+026:
+027::
+028; Ring Down Messung, 9.6e-3 mBar
