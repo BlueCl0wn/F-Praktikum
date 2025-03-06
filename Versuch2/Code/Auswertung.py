@@ -3,6 +3,10 @@ import numpy as np
 from DatFileReader import DatFileReader
 from Fehlerrechnung import *
 from scipy.signal import find_peaks
+from uncertainties.umath import sin, cos, sqrt
+import uncertainties.unumpy as unp
+from scipy.optimize import fsolve
+
 
 # Tupleaufbau für graph() im multiple modus:
 # (data array, label, plot type, marker, linewdiths)
@@ -13,7 +17,7 @@ plot1 = False
 plot2 = False
 plot3 = False
 plot4 = False
-plot5 = True
+plot5 = False
 plot6 = False
 plot7 = False
 
@@ -47,6 +51,7 @@ y_data = [(Ramp_DC.y_data[0], "Sinus" ,"plot" , "x" , 0.2),
 if plot1 or plot:
     graph(Ramp_DC.x_data, y_data, multiple=True, ylabel=rf"Spannung / $mV$", xlabel=rf"Zeit / $ms$")
     graph(Ramp_DC.x_data, Ramp_DC.y_data[0], graph="plot", ylabel=rf"Spannung / $mV$", xlabel=rf"Zeit / $ms$", size=0.1, minorgrid = True)
+    graph(Ramp_DC.x_data, Ramp_AC.y_data[0], graph="plot", ylabel=rf"Spannung / $mV$", xlabel=rf"Zeit / $ms$", size=0.1, minorgrid = True)
 
 I_max = unc.ufloat(-0.1 + 0.05/4, 0.025/2 )
 I_min = unc.ufloat(-1.1, 0.025)
@@ -79,13 +84,52 @@ print()
 # ------------------ 3. Bestimmung der Kalibrationskonstante    --------------------
 print(" 3. Bestimmung der Kalibrationskonstante ".center(100, "-"))
 
-Kalibrationsdaten = DatFileReader("../Messwerte/FileCheck_013.DAT")
 
+
+# Wellelänge des benutzten Lasers
+l = 660e-9 # m
+
+
+def f(x:float,_a: float, _b: float)-> float:
+    return _a+_b*cos(x/l)^2
+
+def f_deriv(x:float, _b: float)-> float:
+    return -(2 * _b * cos(x / l) * sin(x / l)) / l
+
+V_min = unc.ufloat(-4.5e-3, 0.5e-3) # V
+V_max = unc.ufloat(-5.5e-3, 0.5e-3) # V
+a = V_min
+b = V_max - a
+x = l/8
+kali_kons = f_deriv(x, b)
+print("Kalibrationskostante K =", kali_kons)
+
+#  sum_value.derivatives[u])
+
+
+print()
+# ------------------ 4. Weglängenänderung    --------------------
+print(" 4. Weglängenänderung ".center(100, "-"))
+
+
+def x_d(_P, _R, _K):
+    _U = sqrt(_P*_R)
+    return _U/_K
+
+def P_d(_I):
+    P_0 = 1e-3 # W
+    return P_0 * 10**(0.1*_I)
+
+Kalibrationsdaten = DatFileReader("../Messwerte/FileCheck_013.DAT")
 peaks_kalibrat, _ = find_peaks(Kalibrationsdaten.y_data, prominence=0.7)  # find peaks
 print("Peak der Integration bei:", Kalibrationsdaten[peaks_kalibrat[0]])
-if plot3 or plot:
+if plot4 or plot:
     graph_spect(Kalibrationsdaten, peaks=peaks_kalibrat)
 
+P = P_d(Kalibrationsdaten[peaks_kalibrat[0]][1])
+R = 50 # Ohm
+dx = x_d(P, R, kali_kons)
+print("Weglängenänderung: ", dx)
 
 
 
@@ -154,10 +198,7 @@ RingDown_7 = DatFileReader("../Messwerte/FileCheck_024.DAT", header_lines=29)
 RingDown_8 = DatFileReader("../Messwerte/FileCheck_025.DAT", header_lines=29)
 RingDown_9 = DatFileReader("../Messwerte/FileCheck_028.DAT", header_lines=29)
 
-def guetefaktor(F, Gamma) -> int:
-    """ Method doing quality factor calculation.
-    Gütefaktor ist einheitslos"""
-    return F/Gamma
+
 
 frequenzen = np.array([261660, 261389, 261394, 261395, 261405, 261394, 261395, 261376, 261400]) # Hz
 drucks = np.array([1.4e-6, 7.1e-6, 1.5e-5, 7.8e-5, 1.6e-4, 5.8e-4, 1.5e-3, 4.6e-3, 9.6e-3])  # mBar
@@ -177,16 +218,30 @@ ring_down_fast(RingDown_7, 2, 3.5)
 ring_down_fast(RingDown_8, 0.95, 1.5)
 ring_down_fast(RingDown_9, 0.8, 1.1)
 print()
-# ------------------ 6. Ring Down Messungen --------------------
+# ------------------ 7. Ausmessen und Plotten Gütefaktoren --------------------
 print(" 7. Ausmessen und Plotten Gütefaktoren".center(100, "-"))
+
+def guetefaktor(F, Gamma) -> int:
+    """ Method doing quality factor calculation.
+    Gütefaktor ist einheitslos"""
+    return F/Gamma
 
 fits_gamma = np.array(fits_gamma)
 
 #print("fits_gamma", fits_gamma)
-guetefaktoren = guetefaktor(frequenzen, fits_gamma) # Einheitslos
+guetefaktoren = guetefaktor(frequenzen, -fits_gamma) # Einheitslos
+guetefaktoren = unp.uarray([x.nominal_value for x in guetefaktoren],
+                       [x.std_dev for x in guetefaktoren])
 #print(guetefaktoren)
-
+print("Gütefaktoren:")
 print(guetefaktoren)
+print()
+print("Gütefaktoren.nomial_values:", unp.nominal_values(guetefaktoren))
+print()
+print("Gütefaktoren.std_devs:", unp.std_devs(guetefaktoren))
+for i in guetefaktoren:
+    print(i)
+
 
 if plot7 or plot:
     errors = [i.std_dev for i in guetefaktoren]
