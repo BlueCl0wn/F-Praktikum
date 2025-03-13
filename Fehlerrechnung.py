@@ -186,7 +186,8 @@ def graph(x: list | np.ndarray,
     :param graph:
     :return: None
 
-    If multiple y data: (data array, label, plot type, marker, linewdiths)
+    # If multiple y data: (data array, label, plot type, marker, linewdiths, start_value, end_value)
+    #                      0           1      2          3       4           5            6
     """
     fig, ax = plt.subplots(layout='constrained')
 
@@ -201,14 +202,14 @@ def graph(x: list | np.ndarray,
             elif y_i[2] == "errorbar":
                 ax.errorbar(x, y_i[0], yerr=y_i[5], linewidth=y_i[4], label=y_i[1], marker=y_i[3])
             if trendlinie:
-                params, stds = poly_fit(x[trend_start: trend_stop], y[trend_start:trend_stop], uncert=False)
+                params, stds = poly_fit(x[y_i[5]: y_i[6]], y_i[0][y_i[5]:y_i[6]], uncert=False)
                 func =  np.poly1d(params)
-                if type(trend_start) is not None:
-                    x_short = x[int(trend_start- 0.1*trend_start): int(trend_stop+ 0.18*trend_stop)]
+                if type(y_i[5]) is not None:
+                    x_short = x[int(y_i[5]- 0.1*y_i[5]): int(y_i[6]+ 0.18*y_i[6])]
                 else:
                     x_short = x
 
-                ax.plot(x_short, func(x_short), color="black", linestyle="dashed",
+                ax.plot(x_short, func(x_short), color="fuchsia", linestyle="dashed",
                         label=rf"{y_i[1]}: Trendlinie: {params[0]: .2e}$*x + {params[1]: .2e}$", marker=marker, linewidth=size)
         ax.legend()
 

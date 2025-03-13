@@ -6,6 +6,7 @@ from scipy.signal import find_peaks
 from uncertainties.umath import sin, cos, sqrt
 import uncertainties.unumpy as unp
 from scipy.optimize import fsolve
+import math
 
 
 # Tupleaufbau für graph() im multiple modus:
@@ -18,7 +19,7 @@ plot2 = False
 plot3 = False
 plot4 = False
 plot5 = False
-plot6 = False
+plot6 = True
 plot7 = False
 
 
@@ -91,18 +92,28 @@ l = 660e-9 # m
 
 
 def f(x:float,_a: float, _b: float)-> float:
-    return _a+_b*cos(x/l)^2
+    return _a+_b*np.cos(x/l)**2
 
 def f_deriv(x:float, _b: float)-> float:
     return -(2 * _b * cos(x / l) * sin(x / l)) / l
 
+
+
 V_min = unc.ufloat(-4.5e-3, 0.5e-3) # V
 V_max = unc.ufloat(-5.5e-3, 0.5e-3) # V
-a = V_min
-b = V_max - a
+a_1 = V_min
+b_1 = V_max - a_1
 x = l/8
-kali_kons = f_deriv(x, b)
+kali_kons = f_deriv(x, b_1)
+# TODO:
 print("Kalibrationskostante K =", kali_kons)
+
+# If multiple y data: (data array, label, plot type, marker, linewdiths, start_value, end_value)
+#                      0           1      2          3       4           5            6
+if plot3 or plot:
+    x = np.linspace(-l*math.pi, l*math.pi, 500)
+    graph(x, f(x, a_1.nominal_value, b_1.nominal_value)  , xlabel=r"$\Delta x ~/ ~m$", ylabel=r"$U(\Delta x) ~/~ V$",
+          graph="plot")
 
 #  sum_value.derivatives[u])
 
@@ -132,36 +143,43 @@ dx = x_d(P, R, kali_kons)
 print("Weglängenänderung: ", dx)
 
 
-
 print()
 # ------------------ 5. Vergleichsbild Mode bei verschiedenen Drücken --------------------
 print(" 5. Vergleichsbild Moden bei verschiedenen Drücken ".center(100, "-"))
 
 # TODO: The plots are not on the same level. This is probably due to different Reference Levels #
 #       But how is it possible to adjust them to one value?
-
 # Mode 1
 Mode_1_Pmin = DatFileReader("../Messwerte/FileCheck_015.DAT", header_lines=29)
 Mode_1_Pmid = DatFileReader("../Messwerte/FileCheck_029.DAT", header_lines=29)
 Mode_1_Pmax = DatFileReader("../Messwerte/FileCheck_026.DAT", header_lines=29)
-y_data_Mode_1 = ((Mode_1_Pmin.y_data, r"$P = 3 \cdot 10^{-6} ~ mBar$", "plot", "-", 1),
-                 (Mode_1_Pmid.y_data, r"$P = 1 \cdot 10^{-4} ~ mBar$", "plot", "-", 1),
-                 (Mode_1_Pmax.y_data, r"$P = 6,5 \cdot 10^{-3} ~ mBar$", "plot", "-", 1))
+
+
+# Assignes cut off indices to remove unecessary noise
+a_1, b_1 = Mode_1_Pmid.get_index_for_x(261380), Mode_1_Pmid.get_index_for_x(261650)
+
+y_data_Mode_1 = ((Mode_1_Pmin.y_data[a_1: b_1], r"$P = 3 \cdot 10^{-6} ~ mBar$", "plot", "-", 1),
+                 (Mode_1_Pmid.y_data[a_1: b_1], r"$P = 1 \cdot 10^{-4} ~ mBar$", "plot", "-", 1),
+                 (Mode_1_Pmax.y_data[a_1: b_1], r"$P = 6,5 \cdot 10^{-3} ~ mBar$", "plot", "-", 1))
 #                (data array, label, plot type, marker, linewdiths)
 
 if plot5 or plot:
-    graph(Mode_1_Pmid.x_data / 1000, y_data_Mode_1, multiple=True, xlabel=r"Frequenz / $kHz$", ylabel=r"Intensität / $dBm$")
+    graph(Mode_1_Pmid.x_data[a_1:b_1] / 1000, y_data_Mode_1, multiple=True, xlabel=r"Frequenz / $kHz$", ylabel=r"Intensität / $dBm$")
 print(Mode_1_Pmax.get_header_value("Ref Level"))
 # Mode 2
 Mode_2_Pmin = DatFileReader("../Messwerte/FileCheck_016.DAT", header_lines=29)
 Mode_2_Pmid = DatFileReader("../Messwerte/FileCheck_030.DAT", header_lines=29)
 Mode_2_Pmax = DatFileReader("../Messwerte/FileCheck_027.DAT", header_lines=29)
-y_data_Mode_2 = ((Mode_2_Pmin.y_data, r"$P = 3 \cdot 10^{-6} ~ mBar$", "plot", "-", 1),
-                 (Mode_2_Pmid.y_data, r"$P = 1 \cdot 10^{-4} ~ mBar$", "plot", "-", 1),
-                 (Mode_2_Pmax.y_data, r"$P = 6,5 \cdot 10^{-3} ~ mBar$", "plot", "-", 1))
+
+# Assignes cut off indices to remove unecessary noise
+a_2, b_2 = Mode_2_Pmid.get_index_for_x(418850), Mode_2_Pmid.get_index_for_x(419050)
+
+y_data_Mode_2 = ((Mode_2_Pmin.y_data[a_2: b_2], r"$P = 3 \cdot 10^{-6} ~ mBar$", "plot", "-", 1),
+                 (Mode_2_Pmid.y_data[a_2: b_2], r"$P = 1 \cdot 10^{-4} ~ mBar$", "plot", "-", 1),
+                 (Mode_2_Pmax.y_data[a_2: b_2], r"$P = 6,5 \cdot 10^{-3} ~ mBar$", "plot", "-", 1))
 
 if plot5 or plot:
-    graph(Mode_2_Pmid.x_data / 1000, y_data_Mode_2, multiple=True, xlabel=r"Frequenz / $kHz$", ylabel=r"Intensität / $dBm$")
+    graph(Mode_2_Pmid.x_data[a_2: b_2] / 1000, y_data_Mode_2, multiple=True, xlabel=r"Frequenz / $kHz$", ylabel=r"Intensität / $dBm$")
 
 
 
@@ -176,7 +194,7 @@ def ring_down_fast(Data, start, stop):
     i_start, i_stop = Data.get_index_for_x(start), Data.get_index_for_x(stop)
 
     # plot Ring Down Messung
-    if plot6 or plot:
+    if plot6 and plot:
         #ring_down_one(Data, i_start, i_stop)
         graph(Data.x_data, Data.y_data, xlabel=r"Zeit / $s$", ylabel=r"Intensität / $dBm$", trendlinie=True,
               graph="plot", trend_start=i_start, trend_stop=i_stop, minorgrid=True)
@@ -217,6 +235,48 @@ ring_down_fast(RingDown_6, 2.25 , 4.5)
 ring_down_fast(RingDown_7, 2, 3.5)
 ring_down_fast(RingDown_8, 0.95, 1.5)
 ring_down_fast(RingDown_9, 0.8, 1.1)
+
+# If multiple y data: (data array, label, plot type, marker, linewdiths, start_value, end_value)
+#                      0           1      2          3       4           5            6
+#[RingDown_1.get_index_for_x(start): RingDown_1.get_index_for_x(stop)]
+
+
+y_data = ((RingDown_1.y_data, r"$1,4 \times 10^{-6} ~\mathrm{mBar}$", "plot", None, None, RingDown_1.get_index_for_x(2.5) , RingDown_1.get_index_for_x(6.5)),
+          (RingDown_3.y_data, r"$1,5 \times 10^{-5} ~\mathrm{mBar}$", "plot", None, None, RingDown_3.get_index_for_x(2.2) , RingDown_3.get_index_for_x(6)),
+          (RingDown_5.y_data, r"$1,6 \times 10^{-4} ~\mathrm{mBar}$", "plot", None, None, RingDown_5.get_index_for_x(2.3) , RingDown_5.get_index_for_x(5.5)),
+          (RingDown_8.y_data, r"$4,6 \times 10^{-3} ~\mathrm{mBar}$", "plot", None, None, RingDown_8.get_index_for_x(0.95) , RingDown_8.get_index_for_x(1.5)),
+          )
+if plot6 or plot:
+    graph(RingDown_1.x_data, y_data, multiple=True, trendlinie=False)
+
+Messungen = [RingDown_1, RingDown_3, RingDown_5, RingDown_8]
+x_starts = [2.5, 2.2, 2.3, 0.95]
+for messung_i, x_start_i in zip(Messungen,x_starts) :
+    print("x_staart_I:", x_start_i)
+    messung_i.x_data = messung_i.x_data - x_start_i
+
+
+slice1 = (RingDown_1.x_data > -1) & (RingDown_1.x_data < 7)
+slice2 = (RingDown_3.x_data > -1) & (RingDown_3.x_data < 7)
+slice3 = (RingDown_5.x_data > -1) & (RingDown_5.x_data < 7)
+slice4 = (RingDown_8.x_data > -1) & (RingDown_8.x_data < 7)
+print(RingDown_1.y_data[slice1].size, RingDown_3.y_data[slice2].size, RingDown_5.y_data[slice3].size, RingDown_8.y_data[slice4].size)
+print(RingDown_1.x_data[slice1][-10:])
+print(RingDown_3.x_data[slice2][-10:])
+print(RingDown_3.x_data[slice3][-10:])
+print(RingDown_3.x_data[slice4][-10:])
+y_data = ((RingDown_1.y_data[slice1], r"$1,4 \times 10^{-6} ~\mathrm{mBar}$", "plot", None, None,
+           RingDown_1.get_index_for_x(0), RingDown_1.get_index_for_x(6.5-2.5)),
+          (RingDown_3.y_data[slice2], r"$1,5 \times 10^{-5} ~\mathrm{mBar}$", "plot", None, None,
+           RingDown_3.get_index_for_x(0), RingDown_3.get_index_for_x(6-2.2)),
+          (RingDown_5.y_data[slice3], r"$1,6 \times 10^{-4} ~\mathrm{mBar}$", "plot", None, None,
+           RingDown_5.get_index_for_x(0), RingDown_5.get_index_for_x(5.5-2.3)),
+          (RingDown_8.y_data[slice4], r"$4,6 \times 10^{-3} ~\mathrm{mBar}$", "plot", None, None,
+           RingDown_8.get_index_for_x(0), RingDown_8.get_index_for_x(1.5-0.95)),
+          )
+if plot6 or plot:
+    print("sffsg", RingDown_1.x_data[slice1].size)
+    graph(RingDown_1.x_data[slice1], y_data, multiple=True, trendlinie=True)
 print()
 # ------------------ 7. Ausmessen und Plotten Gütefaktoren --------------------
 print(" 7. Ausmessen und Plotten Gütefaktoren".center(100, "-"))
